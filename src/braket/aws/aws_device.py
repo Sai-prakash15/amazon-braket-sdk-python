@@ -677,29 +677,10 @@ class AwsDevice(Device):
     def _get_waveform(self, id:str, name:str, arguments: Dict):
         waveform_parameters = {"id": id}
         if name == "drag_gaussian":
-            # length = sigma = beta = amplitude = None
+            # FIXME: leverage val["type"] to determine the type of the argument and recast accordingly
             waveform_parameters |= {val["name"]: float(val["value"]) if is_float(val["value"]) else FreeParameter(val["value"]) for val in arguments}
             return DragGaussianWaveform(**waveform_parameters)
-            # for val in arguments:
-            #     if val["name"] == "length":
-            #         length = float(val["value"]) if is_float(val["value"]) else FreeParameter(val["value"])
-            #     if val["name"] == "sigma":
-            #         sigma = float(val["value"]) if is_float(val["value"]) else FreeParameter(val["value"])
-            #     if val["name"] == "beta":
-            #         beta = float(val["value"]) if is_float(val["value"]) else FreeParameter(val["value"])
-            #     if val["name"] == "amplitude":
-            #         amplitude = float(val["value"]) if is_float(val["value"]) else FreeParameter(val["value"])
-            # return DragGaussianWaveform(length, sigma, beta, amplitude)
         elif name == "gaussian":
-            # length = sigma = amplitude = None
-            # for val in arguments:
-            #     if val["name"] == "length":
-            #         length = float(val["value"]) if is_float(val["value"]) else FreeParameter(val["value"])
-            #     if val["name"] == "sigma":
-            #         sigma = float(val["value"]) if is_float(val["value"]) else FreeParameter(val["value"])
-            #     if val["name"] == "amplitude":
-            #         amplitude = float(val["value"]) if is_float(val["value"]) else FreeParameter(val["value"])
-            # return GaussianWaveform(length, sigma, amplitude)
             waveform_parameters |= {val["name"]: float(val["value"]) if is_float(val["value"]) else FreeParameter(val["value"]) for val in arguments}
             return GaussianWaveform(**waveform_parameters)
         elif name == "constant":
